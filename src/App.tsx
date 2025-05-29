@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Container, Typography, Box, Button, Paper, Grid, TextField, IconButton } from '@mui/material';
+import { Container, Typography, Box, Button, Paper, Grid, TextField, IconButton, Tooltip } from '@mui/material';
+import ContentCopy from '@mui/icons-material/ContentCopy';
+import Download from '@mui/icons-material/Download';
+import TopBar from './TopBar.tsx';
 import { Step, StepGroup, JsonTemplate } from './models';
 import FlowView from './FlowView.tsx';
 import StepConfigEditor from './StepConfigEditor.tsx';
@@ -10,7 +13,7 @@ const handleImportJson = async (file: File) => {
     const text = await file.text();
     const data = JSON.parse(text);
     if (data.name && data.steps) {
-      // Adaptar a formato interno: stepsByPhase debe ser Record<string, Record<string, Step>>
+      // Adaptar a formato interno: stepsByPhase debe ser Record<string, Record<string, Step>>∫
       const newStepsByPhase: Record<string, Record<string, Step>> = {};
       Object.entries(data.steps).forEach(([phaseId, steps]) => {
         const stepsObj: Record<string, Step> = {};
@@ -141,11 +144,9 @@ function App() {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        {/* 1. Título */}
-        <Typography variant="h3" align="center" sx={{ fontWeight: 700, mb: 2 }}>
-          Generador de JSONs para Pruebas de Integración
-        </Typography>
+      <TopBar />
+      <Container maxWidth="lg" sx={{ py: 4, pt: 10 }}>
+        {/* TopBar fija arriba. El contenido ahora tiene padding-top para no quedar oculto. */}
         {/* 2. Importar JSON a la derecha */}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
           <input
@@ -282,7 +283,46 @@ function App() {
         {/* 6. Visualizador del JSON */}
         <Box sx={{ mt: 4, mb: 6 }}>
           <Paper sx={{ p: 2, borderRadius: 3, background: '#222', color: '#fff', fontFamily: 'monospace', fontSize: 15 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: '#90caf9' }}>JSON generado</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Typography variant="h6" sx={{ color: '#90caf9' }}>JSON generado</Typography>
+              <Box>
+                {/* Botones minimalistas con solo icono */}
+                <Tooltip title="Copiar JSON" arrow>
+                  <IconButton
+                    size="small"
+                    sx={{ color: '#90caf9', mx: 0.5 }}
+                    onClick={() => {
+                      const json = JSON.stringify(generateJson(), null, 2);
+                      navigator.clipboard.writeText(json);
+                    }}
+                  >
+                    <ContentCopy fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Descargar JSON" arrow>
+                  <IconButton
+                    size="small"
+                    sx={{ color: '#90caf9', mx: 0.5 }}
+                    onClick={() => {
+                      const json = JSON.stringify(generateJson(), null, 2);
+                      const blob = new Blob([json], { type: 'application/json' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `${jsonName || 'json-plantilla'}.json`;
+                      document.body.appendChild(a);
+                      a.click();
+                      setTimeout(() => {
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                      }, 0);
+                    }}
+                  >
+                    <Download fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
             <pre style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{JSON.stringify(generateJson(), null, 2)}</pre>
           </Paper>
         </Box>
