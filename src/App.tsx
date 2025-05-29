@@ -271,7 +271,11 @@ function App() {
           <Paper sx={{ p: 3, minHeight: 300, boxShadow: 8, border: '2px solid #1976d2', borderRadius: 4, background: '#f5faff', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
             <Typography variant="h5" sx={{ mb: 2, color: '#1976d2', fontWeight: 700 }}>Visualización gráfica del flujo</Typography>
             <Box sx={{ flex: 1, minHeight: 200 }}>
-              <FlowView steps={Object.values(stepsByPhase).flatMap(stepsObj => Object.values(stepsObj))} />
+              <FlowView
+  steps={Object.values(stepsByPhase).flatMap(stepsObj => Object.values(stepsObj))}
+  selectedStepId={selectedStepIdx || undefined}
+  stepsByPhase={Object.fromEntries(Object.entries(stepsByPhase).map(([phase, stepsObj]) => [phase, Object.values(stepsObj)]))}
+/>
             </Box>
           </Paper>
         </Box>
