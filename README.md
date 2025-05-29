@@ -18,11 +18,26 @@ Aplicación web para crear, visualizar y guardar archivos JSON personalizados pa
 - `/src` - Código fuente de la app
 - `/public` - Archivos estáticos
 
+## Requisitos
+- Node.js >= 16.x (recomendado LTS)
+- npm >= 8.x
+- Sistema operativo: Windows, macOS o Linux
+
 ## Instalación y ejecución
-```bash
-npm install
-npm start
-```
+1. Clona el repositorio:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd json-creator
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Inicia la aplicación en modo desarrollo:
+   ```bash
+   npm start
+   ```
+4. Accede a la app en tu navegador en [http://localhost:3000](http://localhost:3000)
 
 ---
 
