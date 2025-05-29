@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Typography, Box, Button, Paper, Grid, TextField } from '@mui/material';
+import { Container, Typography, Box, Button, Paper, Grid, TextField, IconButton } from '@mui/material';
 import { Step, StepGroup, JsonTemplate } from './models';
 import FlowView from './FlowView.tsx';
 import StepConfigEditor from './StepConfigEditor.tsx';
@@ -222,19 +222,34 @@ function App() {
     ) : (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
         {Object.entries(stepsByPhase[selectedPhase] || {})
-          .sort(([, a], [, b]) => a.order - b.order)
-          .map(([stepId, step]) => (
-            <Button
-              key={stepId}
-              variant={selectedStepIdx === stepId ? 'contained' : 'outlined'}
-              color={selectedStepIdx === stepId ? 'primary' : 'inherit'}
-              size="small"
-              sx={{ justifyContent: 'flex-start', mb: 0.5, textTransform: 'none' }}
-              onClick={() => setSelectedStepIdx(stepId)}
-            >
-              {`${step.order}. ${step.type}`}
-            </Button>
-          ))}
+  .sort(([, a], [, b]) => a.order - b.order)
+  .map(([stepId, step]) => (
+    <Box key={stepId} sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+      <Button
+        variant={selectedStepIdx === stepId ? 'contained' : 'outlined'}
+        color={selectedStepIdx === stepId ? 'primary' : 'inherit'}
+        size="small"
+        sx={{ justifyContent: 'flex-start', flex: 1, textTransform: 'none' }}
+        onClick={() => setSelectedStepIdx(stepId)}
+      >
+        {`${step.order}. ${step.type}`}
+      </Button>
+      <IconButton
+        size="small"
+        color="error"
+        aria-label="Eliminar Step"
+        sx={{ ml: 1 }}
+        onClick={() => {
+          const newSteps = { ...stepsByPhase[selectedPhase] };
+          delete newSteps[stepId];
+          setStepsByPhase({ ...stepsByPhase, [selectedPhase]: newSteps });
+          if (selectedStepIdx === stepId) setSelectedStepIdx(null);
+        }}
+      >
+        <span style={{ fontWeight: 700, fontSize: 16 }}>✕</span>
+      </IconButton>
+    </Box>
+  ))}
       </Box>
     )}
   </Box>
