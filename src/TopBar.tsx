@@ -1,10 +1,17 @@
 import React from 'react';
-import { AppBar, Toolbar, Box } from '@mui/material';
+import { AppBar, Toolbar, Box, IconButton, Tooltip } from '@mui/material';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 // Puedes cambiar la ruta del logo si el archivo tiene otro nombre
 const LOGO_SRC = '/jsongenie-logo.png';
 
-const TopBar: React.FC = () => {
+interface TopBarProps {
+  onImportLocal: (file: File) => void;
+  onImportAPI: () => void;
+}
+
+const TopBar: React.FC<TopBarProps> = ({ onImportLocal, onImportAPI }) => {
   return (
     <AppBar position="fixed" sx={{ background: '#1a2233', boxShadow: 3, zIndex: 1201 }} elevation={2}>
       <Toolbar sx={{ minHeight: 56, display: 'flex', justifyContent: 'space-between', px: { xs: 1, sm: 3 } }}>
@@ -20,9 +27,33 @@ const TopBar: React.FC = () => {
           </span>
         </Box>
         {/* Enlaces de navegación (vacíos por ahora, preparados para el futuro) */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {/* Aquí puedes añadir enlaces con <a> o <Button> más adelante */}
-        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+  {/* Importar JSON local */}
+  <input
+    accept=".json,application/json"
+    style={{ display: 'none' }}
+    id="import-json-file-topbar"
+    type="file"
+    onChange={e => {
+      const file = e.target.files?.[0];
+      if (file) onImportLocal(file);
+      e.target.value = '';
+    }}
+  />
+  <label htmlFor="import-json-file-topbar">
+    <Tooltip title="Importar JSON local">
+      <IconButton component="span" sx={{ color: '#aee7f5', borderRadius: 2, p: 1, border: '1px solid #2b3a4d', background: '#23283a', mr: 1, ':hover': { background: '#283040' } }}>
+        <UploadFileIcon fontSize="medium" />
+      </IconButton>
+    </Tooltip>
+  </label>
+  {/* Importar desde BBDD/API */}
+  <Tooltip title="Importar desde BBDD (API)">
+    <IconButton onClick={onImportAPI} sx={{ color: '#aee7f5', borderRadius: 2, p: 1, border: '1px solid #2b3a4d', background: '#23283a', ':hover': { background: '#283040' } }}>
+      <CloudDownloadIcon fontSize="medium" />
+    </IconButton>
+  </Tooltip>
+</Box>
       </Toolbar>
     </AppBar>
   );

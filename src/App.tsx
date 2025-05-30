@@ -144,28 +144,15 @@ function App() {
 
   return (
     <>
-      <TopBar />
+      <TopBar
+        onImportLocal={handleImportJson}
+        onImportAPI={() => {
+          alert('Funcionalidad de importar desde BBDD/API próximamente.');
+        }}
+      />
       <Container maxWidth="lg" sx={{ py: 4, pt: 10 }}>
         {/* TopBar fija arriba. El contenido ahora tiene padding-top para no quedar oculto. */}
-        {/* 2. Importar JSON a la derecha */}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
-          <input
-            accept=".json,application/json"
-            style={{ display: 'none' }}
-            id="import-json-file"
-            type="file"
-            onChange={e => {
-              const file = e.target.files?.[0];
-              if (file) handleImportJson(file);
-              e.target.value = '';
-            }}
-          />
-          <label htmlFor="import-json-file">
-            <Button variant="contained" color="primary" component="span" startIcon={<span role="img" aria-label="import">📂</span>}>
-              Importar JSON
-            </Button>
-          </label>
-        </Box>
+        {/* 2. Importar JSON a la derecha (ahora en TopBar) */}
         {/* 3. Editar nombre del JSON */}
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3 }}>
           <TextField
@@ -231,7 +218,7 @@ function App() {
         color={selectedStepIdx === stepId ? 'primary' : 'inherit'}
         size="small"
         sx={{ justifyContent: 'flex-start', flex: 1, textTransform: 'none' }}
-        onClick={() => setSelectedStepIdx(stepId)}
+        onClick={() => setSelectedStepIdx(selectedStepIdx === stepId ? null : stepId)}
       >
         {`${step.order}. ${step.type}`}
       </Button>
