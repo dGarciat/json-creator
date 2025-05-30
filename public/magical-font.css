@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Macondo+Swash+Caps&display=swap');
+
+.magical-font {
+  font-family: 'Macondo Swash Caps', cursive;
+  letter-spacing: 2px;
+  color: #aee7f5;
+  text-shadow: 0 2px 8px #0ff, 0 0px 14px #1976d2;
+}

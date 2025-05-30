@@ -150,11 +150,11 @@ function App() {
           alert('Funcionalidad de importar desde BBDD/API próximamente.');
         }}
       />
-      <Container maxWidth="lg" sx={{ py: 4, pt: 10 }}>
+      <Container maxWidth="lg" sx={{ py: 4, pt: 14 }}>
         {/* TopBar fija arriba. El contenido ahora tiene padding-top para no quedar oculto. */}
         {/* 2. Importar JSON a la derecha (ahora en TopBar) */}
         {/* 3. Editar nombre del JSON */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3, mt: 2 }}>
           <TextField
             label="Nombre del JSON"
             value={jsonName}
