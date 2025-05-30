@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, MenuItem, IconButton, Tooltip } from '@mui/material';
+import { Box, Typography, TextField, Button, MenuItem, IconButton, Tooltip, Divider } from '@mui/material';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import SaveIcon from '@mui/icons-material/Save';
 import JsonEditorField from './JsonEditorField.tsx';
 import ArrayChipInput from './ArrayChipInput.tsx';
 import BooleanSwitch from './BooleanSwitch.tsx';
@@ -98,10 +98,11 @@ const StepConfigEditor: React.FC<StepConfigEditorProps> = ({ type, config, onSav
             sx={{ color: '#90caf9', borderRadius: 2, p: 1, border: '1px solid #2b3a4d', background: '#23283a', ':hover': { background: '#283040' } }}
             onClick={() => alert('Funcionalidad de guardar en BBDD/API próximamente.')}
           >
-            <CloudUploadIcon fontSize="small" />
+            <SaveIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       </Box>
+      <Divider sx={{ my: 2, borderColor: 'black', bgcolor: 'black', height: 4 }} />
       <Typography>ID: {type}</Typography>
       {fields.length === 0 && <Typography color="text.secondary">No hay configuración específica para este tipo.</Typography>}
       {fields.map(field => (

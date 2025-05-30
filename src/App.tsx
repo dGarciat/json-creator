@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Typography, Box, Button, Paper, Grid, TextField, IconButton, Tooltip } from '@mui/material';
+import { Container, Typography, Box, Button, Paper, Grid, TextField, IconButton, Tooltip, Collapse } from '@mui/material';
 import ContentCopy from '@mui/icons-material/ContentCopy';
 import Download from '@mui/icons-material/Download';
 import TopBar from './TopBar.tsx';
@@ -162,6 +162,22 @@ function App() {
             variant="outlined"
             sx={{ width: 400 }}
           />
+          <Tooltip title="Reiniciar test (perderás el contenido actual)">
+            <IconButton
+              color="error"
+              sx={{ ml: 2 }}
+              onClick={() => {
+                if (window.confirm('¿Seguro que quieres reiniciar el test? ¡Perderás todo el contenido actual!')) {
+                  setJsonName('Nuevo JSON de Prueba');
+                  setStepsByPhase({ '1': {} });
+                  setSelectedPhase('1');
+                  setSelectedStepIdx(null);
+                }
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="#d32f2f"><path d="M0 0h24v24H0z" fill="none"/><path d="M13 3a9 9 0 1 0 8.94 10.09 1 1 0 0 0-1.98-.18A7 7 0 1 1 12 5V8l4-4-4-4v3a9 9 0 0 0 1 0z"/></svg>
+            </IconButton>
+          </Tooltip>
         </Box>
         {/* 4. Acciones/Fases | Editor de Step */}
         <Grid container spacing={3} alignItems="stretch">
@@ -241,15 +257,18 @@ function App() {
       </Box>
     )}
   </Box>
-  {/* Editor del step seleccionado */}
-  {!selectedStepIdx ? (
+  {/* Editor del step seleccionado con animación deslizante */}
+  <Collapse in={!!selectedStepIdx} timeout={180} unmountOnExit>
+    {selectedStepIdx && (
+      <StepConfigEditor
+        type={stepsByPhase[selectedPhase]?.[selectedStepIdx]?.type}
+        config={stepsByPhase[selectedPhase]?.[selectedStepIdx]?.config}
+        onSave={updateStepConfig}
+      />
+    )}
+  </Collapse>
+  {!selectedStepIdx && (
     <Typography color="text.secondary">Selecciona un step para editar</Typography>
-  ) : (
-    <StepConfigEditor
-      type={stepsByPhase[selectedPhase]?.[selectedStepIdx]?.type}
-      config={stepsByPhase[selectedPhase]?.[selectedStepIdx]?.config}
-      onSave={updateStepConfig}
-    />
   )}
 </Paper>
           </Grid>
